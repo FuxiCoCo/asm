@@ -136,13 +136,22 @@ function buildTable() {
 function toggleScroll(name) {
   if (selectedScrolls.has(name)) {
     selectedScrolls.delete(name);
-    delete scrollQuantities[name];
+    delete scrollQuantities[name]; // ❗ 確保移除時也清除對應數量
   } else {
     selectedScrolls.add(name);
     scrollQuantities[name] = 1;
+
+    // ✅ 加入 GA 追蹤事件
+    if (typeof gtag === 'function') {
+      gtag('event', '選擇卷軸', {
+        event_category: '卷軸互動',
+        event_label: name
+      });
+    }
   }
+
   updateMerchantResults();
-  updateQuantityInputs();
+  updateQuantityInputs(); // 確保選取後會出現金額輸入區
 }
 
 function updateQuantityInputs() {
