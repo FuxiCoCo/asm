@@ -5,22 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>卷軸一站購買推薦器</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- ✅ Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6SMBDVTMS2"></script>
+
+  <!-- ✅ GA4 新追蹤碼 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4R33SKZ5T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
-
-    gtag('config', 'G-6SMBDVTMS2');
+    gtag('config', 'G-Y4R33SKZ5T');
   </script>
-
-  <!-- ✅ 你原本的 CSS 和 JS -->
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <!-- ⬇️ 將圖片路徑指向 logo.png -->
     <img src="logo.png" alt="Logo" class="logo" />
     <h1>📜 楓谷卷軸商人一站購買推薦器</h1>
   </header>
@@ -45,6 +41,40 @@
 
   <script src="scrolls.js"></script>
   <script src="script.js"></script>
+
+  <!-- ✅ GA4 自訂事件追蹤 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 追蹤選擇卷軸（點選表格列）
+      document.getElementById("scroll-table").addEventListener("click", function (e) {
+        if (e.target && e.target.tagName === "TD") {
+          gtag('event', 'select_scroll', {
+            event_category: '操作',
+            event_label: e.target.textContent.trim()
+          });
+        }
+      });
+
+      // 追蹤推薦商人結果變更（內容被改變）
+      const merchantDiv = document.getElementById("merchant-results");
+      const observer = new MutationObserver(() => {
+        gtag('event', 'recommend_merchant', {
+          event_category: '操作',
+          event_label: '產生推薦商人'
+        });
+      });
+      observer.observe(merchantDiv, { childList: true });
+
+      // 追蹤使用者在金額試算輸入欄位動作
+      document.getElementById("calculator").addEventListener("input", function (e) {
+        if (e.target && e.target.tagName === "INPUT") {
+          gtag('event', 'calculate_amount', {
+            event_category: '操作',
+            event_label: e.target.id || 'quantity_input'
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
-
